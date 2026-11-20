@@ -637,5 +637,25 @@ const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.targ
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 document.querySelectorAll('.menu a').forEach(a=>a.onclick=()=>document.getElementById('menu').classList.remove('on'));
 </script>
+<style>
+.fab-dica{position:fixed;right:24px;bottom:92px;z-index:89;background:#fff;color:#3E2A23;border:1px solid #E2D6CE;border-radius:16px 16px 4px 16px;padding:.8rem 2.2rem .8rem 1rem;font-family:'Poppins',sans-serif;font-size:.85rem;line-height:1.5;box-shadow:0 14px 34px rgba(90,59,48,.18);max-width:250px;display:none;cursor:pointer}
+.fab-dica.on{display:block;animation:dicaSobe .4s ease}
+.fab-dica button{position:absolute;top:.35rem;right:.5rem;background:none;border:0;color:#7A6359;font-size:1.1rem;cursor:pointer}
+@keyframes dicaSobe{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:600px){.fab-dica{right:16px;bottom:84px;max-width:230px}}
+</style>
+<div class="fab-dica" id="dica" role="status">Oi! 🌷 Quer agendar uma nova consulta ou tirar uma dúvida? Estou aqui.<button aria-label="Fechar aviso" id="dica-x">×</button></div>
+<script>
+(function(){
+  var dica=document.getElementById('dica'), fab=document.getElementById('fab'), chat=document.getElementById('chat');
+  function esconder(){dica.classList.remove('on');try{sessionStorage.setItem('dicaVista','1')}catch(e){}}
+  dica.onclick=function(){esconder();fab.click();};
+  document.getElementById('dica-x').onclick=function(e){e.stopPropagation();esconder();};
+  fab.addEventListener('click',esconder);
+  document.querySelectorAll('[data-agendar],[data-prof]').forEach(function(b){b.addEventListener('click',esconder);});
+  var vista=false;try{vista=!!sessionStorage.getItem('dicaVista')}catch(e){}
+  if(!vista)setTimeout(function(){if(!chat.classList.contains('on'))dica.classList.add('on');},4000);
+})();
+</script>
 </body>
 </html>
